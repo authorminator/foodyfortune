@@ -1,18 +1,15 @@
-export default function PaperOpenStage({ message, cutText, onPlayAgain }) {
-  return (
-    <div className="stack">
-      <div className="panel pop">
-        <div className="panelLabel">You found a note:</div>
-        <div className="message">{message}</div>
-        <div className="panelMeta" style={{ marginTop: 14 }}>
-          {cutText}
-        </div>
-      </div>
+import parchment from "../assets/parchment.jpg";
 
-      <div className="row">
-        <button className="button button--primary" onClick={onPlayAgain}>
-          Play again
-        </button>
+export default function PaperOpenStage({ message, cutText }) {
+  return (
+    <div className="stack-flex">
+      <div className="panel panel--note pop">
+        <img className="noteImg" src={parchment} alt="Parchment note" />
+        <div className="noteText">
+          <div className="noteLabel">You found a note:</div>
+          <div className="message noteMessage">{message}</div>
+          <div className="noteMeta">{cutText}</div>
+        </div>
       </div>
     </div>
   );

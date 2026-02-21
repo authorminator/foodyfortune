@@ -8,11 +8,9 @@
 }
 
 .shell {
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   padding: 24px;
 }
 
@@ -25,6 +23,7 @@
   padding: 22px;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px);
+  animation: floatCard 6s ease-in-out infinite;
 }
 
 .header {
@@ -54,6 +53,17 @@
   color: rgba(226, 232, 240, 0.9);
   font-size: 13px;
   white-space: nowrap;
+  gap: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.badgeDivider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.518);
+  margin: 0 12px;
+  align-self: center;
 }
 
 .divider {
@@ -74,6 +84,13 @@
 .stack {
   display: grid;
   gap: 14px;
+}
+
+.stack-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
 }
 
 .sectionTitle {
@@ -112,18 +129,67 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-/* .panel--clickable:active {
-  opacity: 0.5;
-} */
+.panel--note {
+  position: relative;
+  width: 90%;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  transform-origin: center;
+  transform: rotate(-2deg);
+  transition: transform 440ms ease;
+}
 
-/* .panel--clickable:active {
-  transform: scale(0.98);
-  filter: brightness(1.12);
-} */
+.panel--note:hover {
+  transform: rotate(-2deg) scale(1.02);
+}
+
+.noteImg {
+  width: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.noteText {
+  position: absolute;
+  inset: 0;
+  padding: 8% 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  color: rgba(34, 43, 53, 0.847);
+}
+
+.noteLabel {
+  font-size: 20px;
+  margin-bottom: 10px;
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+.message {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.noteMeta {
+  margin-top: 18px;
+  font-size: 18px;
+  opacity: 0.9;
+}
 
 .panelLabel {
-  font-size: 12px;
+  font-size: 16px;
   color: rgba(226, 232, 240, 0.65);
+}
+
+.panelLabel--dark {
+  color: rgba(34, 43, 53, 0.847);
 }
 
 .panelMain {
@@ -138,7 +204,7 @@
 
 .panelMeta {
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 18px;
   color: rgba(226, 232, 240, 0.6);
 }
 
@@ -185,10 +251,6 @@
   transform: scale(0.96);
 }
 
-/* .button--primary:active {
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.35);
-} */
-
 .toolLabel {
   font-size: 15px;
 }
@@ -197,13 +259,6 @@
   margin-top: 6px;
   font-size: 12px;
   color: rgba(226, 232, 240, 0.6);
-}
-
-.message {
-  margin-top: 10px;
-  font-size: 22px;
-  font-weight: 750;
-  line-height: 1.25;
 }
 
 .strong {
@@ -249,25 +304,6 @@
   }
 }
 
-/* .flash {
-  animation: flashHit 260ms ease;
-}
-
-@keyframes flashHit {
-  0% {
-    filter: brightness(1);
-    transform: scale(1);
-  }
-  40% {
-    filter: brightness(1.25);
-    transform: scale(0.97);
-  }
-  100% {
-    filter: brightness(1);
-    transform: scale(1);
-  }
-} */
-
 .screenFlash {
   position: fixed;
   inset: 0;
@@ -290,16 +326,40 @@
 }
 
 .pop {
-  animation: popIn 220ms ease;
+  animation: popIn 500ms ease;
 }
 
 @keyframes popIn {
   0% {
-    transform: scale(0.98);
+    transform: rotate(-2deg) scale(0.9);
     opacity: 0;
   }
   100% {
-    transform: scale(1);
+    transform: rotate(-2deg) scale(1);
     opacity: 1;
   }
 }
+
+@keyframes floatCard {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* @keyframes gentleTilt {
+  0% {
+    transform: rotate(-1.2deg);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(-1.2deg);
+  }
+} */

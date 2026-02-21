@@ -94,8 +94,18 @@ export default function App() {
       subtitle="Pick a tool, open the fruit, and find a little note inside."
       badge={
         <>
-          <span className="muted">Mode:</span>{" "}
-          {isPersonal ? "Personal" : "Generic"}
+          <span className="modeBadge">
+            <span className="muted">Mode:</span>{" "}
+            {isPersonal ? "Personal" : "Generic"}
+          </span>
+          {phase === "paperOpen" && (
+            <>
+              <div className="badgeDivider" aria-hidden="true" />
+              <button className="button button--primary" onClick={resetGame}>
+                Play Again ↻
+              </button>
+            </>
+          )}
         </>
       }
       footer={
@@ -144,11 +154,7 @@ export default function App() {
 
       {phase === "paperOpen" && (
         <div className="fade">
-          <PaperOpenStage
-            message={message}
-            cutText={food.cutText}
-            onPlayAgain={resetGame}
-          />
+          <PaperOpenStage message={message} cutText={food.cutText} />
         </div>
       )}
     </Shell>
