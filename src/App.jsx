@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import "./App.css";
 
 import Shell from "./components/Shell";
@@ -42,6 +42,11 @@ export default function App() {
   const [quoteQueue, setQuoteQueue] = useState([]);
   const [quoteIndex, setQuoteIndex] = useState(0);
 
+  const knifeQueueRef = useRef([]);
+  const hammerQueueRef = useRef([]);
+  const knifeIndexRef = useRef(0);
+  const hammerIndexRef = useRef(0);
+
   const eligibleQUOTES = useMemo(() => {
     const base = [...QUOTES.generic];
     if (isPersonal) base.push(...QUOTES.personal);
@@ -80,9 +85,38 @@ export default function App() {
     setFlashKey((k) => k + 1);
   }
 
+  function buildFoodQueues() {
+    const seed = Date.now();
+    const knifeFoods = FOOD_LIST.filter((f) => f.tool === "knife");
+    const hammerFoods = FOOD_LIST.filter((f) => f.tool === "hammer");
+
+    knifeQueueRef.current = seededShuffle(knifeFoods, seed);
+    hammerQueueRef.current = seededShuffle(hammerFoods, seed + 1);
+
+    knifeIndexRef.current = 0;
+    hammerIndexRef.current = 0;
+  }
+
   function pickFoodForTool(toolKey) {
-    const options = FOOD_LIST.filter((f) => f.tool === toolKey);
-    return pickRandom(options);
+    if (toolKey === "knife") {
+      const q = knifeQueueRef.current;
+      if (q.length === 0) return null;
+
+      const food = q[knifeIndexRef.current % q.length];
+      knifeIndexRef.current += 1;
+      return food;
+    }
+
+    if (toolKey === "hammer") {
+      const q = hammerQueueRef.current;
+      if (q.length === 0) return null;
+
+      const food = q[hammerIndexRef.current % q.length];
+      hammerIndexRef.current += 1;
+      return food;
+    }
+
+    return null;
   }
 
   function repickMessage() {
@@ -122,6 +156,11 @@ export default function App() {
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eligibleQUOTES, displayName]);
+
+  useEffect(() => {
+    buildFoodQueues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function resetGame() {
     setPhase("chooseTool");
