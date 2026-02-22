@@ -8,14 +8,15 @@ import PaperStuckStage from "./components/PaperStuckStage";
 import PaperOpenStage from "./components/PaperOpenStage";
 
 import {
-  ALLOWED_PERSONAL_ROUTES,
+  SPECIAL_ROUTE,
+  SPECIAL_FULL_NAME,
   TOOLS,
   QUOTES,
   FOOD_LIST,
 } from "./data/content";
 
-import { safeLowerPathSegment, formatNameForDisplay } from "./utils/routing";
-import { pickRandom } from "./utils/pick";
+import { safeLowerPathSegment } from "./utils/routing";
+import { seededShuffle, pickRandom } from "./utils/pick";
 import knifeCursor from "./assets/cursors/knife.png";
 import hammerCursor from "./assets/cursors/hammer.png";
 
@@ -23,15 +24,11 @@ const REQUIRED_HITS = 3;
 
 export default function App() {
   const routeSlug = useMemo(() => safeLowerPathSegment(), []);
-  const isPersonal = useMemo(
-    () => routeSlug && ALLOWED_PERSONAL_ROUTES.includes(routeSlug),
-    [routeSlug],
-  );
+  const isPersonal = routeSlug === SPECIAL_ROUTE;
 
-  const displayName = useMemo(
-    () => (isPersonal ? formatNameForDisplay(routeSlug) : "[your name]"),
-    [isPersonal, routeSlug],
-  );
+  const displayName = isPersonal
+    ? `Captain ${SPECIAL_FULL_NAME}`
+    : "[your name]";
 
   // phases: chooseTool -> cutting -> paperStuck -> paperOpen
   const [phase, setPhase] = useState("chooseTool");
@@ -41,6 +38,9 @@ export default function App() {
   const [selectedFood, setSelectedFood] = useState(null);
 
   const selectedTool = selectedToolKey ? TOOLS[selectedToolKey] : null;
+
+  const [quoteQueue, setQuoteQueue] = useState([]);
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
   const eligibleQUOTES = useMemo(() => {
     const base = [...QUOTES.generic];
@@ -63,6 +63,19 @@ export default function App() {
     ? { cursor: `url(${cursorUrl}) 8 8, auto` }
     : undefined;
 
+  function currentTenMinSeed() {
+    return Math.floor(Date.now() / (1000 * 60 * 10));
+  }
+
+  function buildQuoteQueue() {
+    const seed = currentTenMinSeed();
+    const shuffled = seededShuffle(eligibleQUOTES, seed).map((q) =>
+      q.replaceAll("[NAME]", displayName),
+    );
+    setQuoteQueue(shuffled);
+    setQuoteIndex(0);
+  }
+
   function triggerScreenFlash() {
     setFlashKey((k) => k + 1);
   }
@@ -73,12 +86,40 @@ export default function App() {
   }
 
   function repickMessage() {
-    const raw = pickRandom(eligibleQUOTES);
-    setMessage(raw.replaceAll("[NAME]", displayName));
+    const needsRebuild =
+      quoteQueue.length === 0 || quoteIndex >= quoteQueue.length;
+
+    if (needsRebuild) {
+      const seed = currentTenMinSeed();
+      const shuffled = seededShuffle(eligibleQUOTES, seed).map((q) =>
+        q.replaceAll("[NAME]", displayName),
+      );
+
+      setQuoteQueue(shuffled);
+      setQuoteIndex(1);
+      setMessage(shuffled[0] ?? "");
+      return;
+    }
+
+    setMessage(quoteQueue[quoteIndex] ?? "");
+    setQuoteIndex((i) => i + 1);
   }
 
   useEffect(() => {
-    if (!message) repickMessage();
+    // initialize the first quote immediately
+    repickMessage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eligibleQUOTES, displayName]);
+
+  useEffect(() => {
+    const id = setInterval(
+      () => {
+        buildQuoteQueue(); // rebuild using the new seed when time window changes
+      },
+      1000 * 60 * 10,
+    );
+
+    return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eligibleQUOTES, displayName]);
 

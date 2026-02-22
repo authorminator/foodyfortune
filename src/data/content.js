@@ -59,7 +59,8 @@ import enchantedEggCut from "../assets/foods/enchanted_egg/cut.png";
 import prismNutWhole from "../assets/foods/prism_nut/whole.png";
 import prismNutCut from "../assets/foods/prism_nut/cut.png";
 
-export const ALLOWED_PERSONAL_ROUTES = ["aqsa"]; // change this
+export const SPECIAL_ROUTE = "aqs"; // first few letters
+export const SPECIAL_FULL_NAME = "Aqsa"; // full name
 
 export const DEFAULT_FOOD_KEY = "mysteryApple";
 
