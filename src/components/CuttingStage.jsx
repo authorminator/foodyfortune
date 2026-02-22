@@ -3,20 +3,15 @@
 export default function CuttingStage({
   tool,
   foodText,
+  image,
+  isMagical,
   hits,
+  requiredHits,
   onHit,
   onReset,
   onScreenFlash,
+  appCursorStyle,
 }) {
-  const requiredHits = tool.requiredHits;
-  // const [flash, setFlash] = useState(false);
-
-  // function triggerFlash() {
-  //   setFlash(false);
-  //   requestAnimationFrame(() => setFlash(true));
-  //   setTimeout(() => setFlash(false), 260);
-  // }
-
   return (
     <div className="stack">
       <h2 className="sectionTitle">
@@ -24,7 +19,8 @@ export default function CuttingStage({
       </h2>
 
       <div
-        className="panel panel--clickable pulse"
+        className={"panel panel--clickable pulse"}
+        style={appCursorStyle}
         onClick={() => {
           // triggerFlash();
           onScreenFlash();
@@ -33,7 +29,13 @@ export default function CuttingStage({
       >
         <div className="panelLabel">Target:</div>
         <div className="panelMain">{foodText}</div>
-
+        {image && (
+          <img
+            className={`foodImg ${isMagical ? "panel--magical" : ""}`}
+            src={image}
+            alt="Food"
+          />
+        )}
         <p className="panelText">
           Click <span className="strong">{requiredHits}</span> times to{" "}
           <span className="strong">{tool.actionVerb.toLowerCase()}</span>.

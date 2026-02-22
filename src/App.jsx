@@ -9,14 +9,17 @@ import PaperOpenStage from "./components/PaperOpenStage";
 
 import {
   ALLOWED_PERSONAL_ROUTES,
-  DEFAULT_FOOD_KEY,
   TOOLS,
-  FOODS,
-  MESSAGES,
+  QUOTES,
+  FOOD_LIST,
 } from "./data/content";
 
 import { safeLowerPathSegment, formatNameForDisplay } from "./utils/routing";
 import { pickRandom } from "./utils/pick";
+import knifeCursor from "./assets/cursors/knife.png";
+import hammerCursor from "./assets/cursors/hammer.png";
+
+const REQUIRED_HITS = 3;
 
 export default function App() {
   const routeSlug = useMemo(() => safeLowerPathSegment(), []);
@@ -30,56 +33,74 @@ export default function App() {
     [isPersonal, routeSlug],
   );
 
-  const food = FOODS[DEFAULT_FOOD_KEY];
-
   // phases: chooseTool -> cutting -> paperStuck -> paperOpen
   const [phase, setPhase] = useState("chooseTool");
   const [selectedToolKey, setSelectedToolKey] = useState(null);
   const [hits, setHits] = useState(0);
   const [message, setMessage] = useState("");
+  const [selectedFood, setSelectedFood] = useState(null);
 
   const selectedTool = selectedToolKey ? TOOLS[selectedToolKey] : null;
 
-  const eligibleMessages = useMemo(() => {
-    const base = [...MESSAGES.generic];
-    if (isPersonal) base.push(...MESSAGES.personal);
+  const eligibleQUOTES = useMemo(() => {
+    const base = [...QUOTES.generic];
+    if (isPersonal) base.push(...QUOTES.personal);
     return base;
   }, [isPersonal]);
 
   const [flashKey, setFlashKey] = useState(0);
 
+  const cursorUrl =
+    phase === "cutting"
+      ? selectedToolKey === "knife"
+        ? knifeCursor
+        : selectedToolKey === "hammer"
+          ? hammerCursor
+          : null
+      : null;
+
+  const appCursorStyle = cursorUrl
+    ? { cursor: `url(${cursorUrl}) 8 8, auto` }
+    : undefined;
+
   function triggerScreenFlash() {
     setFlashKey((k) => k + 1);
   }
 
+  function pickFoodForTool(toolKey) {
+    const options = FOOD_LIST.filter((f) => f.tool === toolKey);
+    return pickRandom(options);
+  }
+
   function repickMessage() {
-    const raw = pickRandom(eligibleMessages);
+    const raw = pickRandom(eligibleQUOTES);
     setMessage(raw.replaceAll("[NAME]", displayName));
   }
 
   useEffect(() => {
     if (!message) repickMessage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eligibleMessages, displayName]);
+  }, [eligibleQUOTES, displayName]);
 
   function resetGame() {
     setPhase("chooseTool");
     setSelectedToolKey(null);
+    setSelectedFood(null);
     setHits(0);
     repickMessage();
   }
 
   function chooseTool(toolKey) {
     setSelectedToolKey(toolKey);
+    setSelectedFood(pickFoodForTool(toolKey));
     setHits(0);
     setPhase("cutting");
   }
 
   function doHit() {
-    if (!selectedTool) return;
     const nextHits = hits + 1;
     setHits(nextHits);
-    if (nextHits >= selectedTool.requiredHits) {
+    if (nextHits >= REQUIRED_HITS) {
       setPhase("paperStuck");
     }
   }
@@ -90,7 +111,7 @@ export default function App() {
 
   return (
     <Shell
-      title={`Fortune Fruit ✨ (${displayName})`}
+      title={`Foody Fortune ✨ - For ${displayName}`}
       subtitle="Pick a tool, open the fruit, and find a little note inside."
       badge={
         <>
@@ -121,21 +142,29 @@ export default function App() {
         <div className="fade">
           <ToolPicker
             tools={TOOLS}
-            foodText={food.wholeText}
+            foodText={"🍎 Choose a tool to reveal today’s item…"}
             onChoose={chooseTool}
           />
         </div>
       )}
 
-      {phase === "cutting" && selectedTool && (
+      {phase === "cutting" && selectedTool && selectedFood && (
         <div className="fade">
           <CuttingStage
             tool={selectedTool}
-            foodText={food.wholeText}
+            foodText={
+              selectedFood
+                ? `✨ A ${selectedFood.type === "magical" ? "mysterious" : ""} ${selectedFood.name} appears before you...`
+                : "✨ ..."
+            }
+            image={selectedFood?.images?.whole}
+            isMagical={selectedFood?.type === "magical"}
             hits={hits}
+            requiredHits={REQUIRED_HITS}
             onHit={doHit}
             onReset={resetGame}
             onScreenFlash={triggerScreenFlash}
+            appCursorStyle={appCursorStyle}
           />
         </div>
       )}
@@ -143,8 +172,10 @@ export default function App() {
       {phase === "paperStuck" && (
         <div className="fade">
           <PaperStuckStage
-            cutText={food.cutText}
-            paperStuckText={food.paperStuckText}
+            cutText={"It breaks open…"}
+            paperStuckText={"📜 A note is stuck inside…"}
+            image={selectedFood?.images?.opened}
+            isMagical={selectedFood?.type === "magical"}
             onOpen={revealPaper}
             onReset={resetGame}
             onScreenFlash={triggerScreenFlash}
@@ -154,7 +185,7 @@ export default function App() {
 
       {phase === "paperOpen" && (
         <div className="fade">
-          <PaperOpenStage message={message} cutText={food.cutText} />
+          <PaperOpenStage message={message} cutText={"It breaks open…"} />
         </div>
       )}
     </Shell>

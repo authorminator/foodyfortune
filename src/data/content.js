@@ -1,3 +1,64 @@
+import appleWhole from "../assets/foods/apple/whole.png";
+import appleCut from "../assets/foods/apple/cut.png";
+
+import orangeWhole from "../assets/foods/orange/whole.png";
+import orangeCut from "../assets/foods/orange/cut.png";
+
+import kiwiWhole from "../assets/foods/kiwi/whole.png";
+import kiwiCut from "../assets/foods/kiwi/cut.png";
+
+import walnutWhole from "../assets/foods/walnut/whole.png";
+import walnutCut from "../assets/foods/walnut/cut.png";
+
+import coconutWhole from "../assets/foods/coconut/whole.png";
+import coconutCut from "../assets/foods/coconut/cut.png";
+
+import pistachioWhole from "../assets/foods/pistachio/whole.png";
+import pistachioCut from "../assets/foods/pistachio/cut.png";
+
+import almondWhole from "../assets/foods/almond/whole.png";
+import almondCut from "../assets/foods/almond/cut.png";
+
+import cakeWhole from "../assets/foods/cake/whole.png";
+import cakeCut from "../assets/foods/cake/cut.png";
+
+import chocolateWhole from "../assets/foods/chocolate/whole.png";
+import chocolateCut from "../assets/foods/chocolate/cut.png";
+
+import donutWhole from "../assets/foods/donut/whole.png";
+import donutCut from "../assets/foods/donut/cut.png";
+
+import cupcakeWhole from "../assets/foods/cupcake/whole.png";
+import cupcakeCut from "../assets/foods/cupcake/cut.png";
+
+import mangoWhole from "../assets/foods/mango/whole.png";
+import mangoCut from "../assets/foods/mango/cut.png";
+
+import pineappleWhole from "../assets/foods/pineapple/whole.png";
+import pineappleCut from "../assets/foods/pineapple/cut.png";
+
+// Magical foods (no images for now)
+import moonFruitWhole from "../assets/foods/moon_fruit/whole.png";
+import moonFruitCut from "../assets/foods/moon_fruit/cut.png";
+
+import auroraAppleWhole from "../assets/foods/aurora_apple/whole.png";
+import auroraAppleCut from "../assets/foods/aurora_apple/cut.png";
+
+import goldenCupcakeWhole from "../assets/foods/golden_cupcake/whole.png";
+import goldenCupcakeCut from "../assets/foods/golden_cupcake/cut.png";
+
+import geodeWhole from "../assets/foods/geode/whole.png";
+import geodeCut from "../assets/foods/geode/cut.png";
+
+import chocolateEggWhole from "../assets/foods/chocolate_egg/whole.png";
+import chocolateEggCut from "../assets/foods/chocolate_egg/cut.png";
+
+import enchantedEggWhole from "../assets/foods/enchanted_egg/whole.png";
+import enchantedEggCut from "../assets/foods/enchanted_egg/cut.png";
+
+import prismNutWhole from "../assets/foods/prism_nut/whole.png";
+import prismNutCut from "../assets/foods/prism_nut/cut.png";
+
 export const ALLOWED_PERSONAL_ROUTES = ["aqsa"]; // change this
 
 export const DEFAULT_FOOD_KEY = "mysteryApple";
@@ -7,33 +68,24 @@ export const TOOLS = {
     key: "knife",
     label: "Knife 🔪",
     actionVerb: "Slice",
-    requiredHits: 3,
     hitWord: "stroke",
   },
   hammer: {
     key: "hammer",
     label: "Hammer 🔨",
     actionVerb: "Smash",
-    requiredHits: 2,
     hitWord: "hit",
-  },
-  hands: {
-    key: "hands",
-    label: "Bare Hands ✋",
-    actionVerb: "Open",
-    requiredHits: 5,
-    hitWord: "tap",
   },
 };
 
-export const FOODS = {
-  mysteryApple: {
-    key: "mysteryApple",
-    wholeText: "🍎 A mysterious apple sits here…",
-    cutText: "🍎➡️🍎 Two neat halves. Something is inside.",
-    paperStuckText: "📜 A tiny note is wedged inside the apple…",
-  },
-};
+// export const FOODS = {
+//   mysteryApple: {
+//     key: "mysteryApple",
+//     wholeText: "🍎 A mysterious apple sits here…",
+//     cutText: "🍎➡️🍎 Two neat halves. Something is inside.",
+//     paperStuckText: "📜 A tiny note is wedged inside the apple…",
+//   },
+// };
 
 export const MESSAGES = {
   generic: [
@@ -111,3 +163,197 @@ export const QUOTES = {
     "You are more capable than you realize.",
   ],
 };
+
+export const FOOD_LIST = [
+  // 🔪 Knife — normal
+  {
+    key: "apple",
+    name: "Apple",
+    tool: "knife",
+    type: "normal",
+    images: { whole: appleWhole, opened: appleCut },
+  },
+  {
+    key: "orange",
+    name: "Orange",
+    tool: "knife",
+    type: "normal",
+    images: { whole: orangeWhole, opened: orangeCut },
+  },
+  {
+    key: "kiwi",
+    name: "Kiwi",
+    tool: "knife",
+    type: "normal",
+    images: { whole: kiwiWhole, opened: kiwiCut },
+  },
+  {
+    key: "cake",
+    name: "Cake",
+    tool: "knife",
+    type: "normal",
+    images: { whole: cakeWhole, opened: cakeCut },
+  },
+  {
+    key: "chocolateBar",
+    name: "Chocolate Bar",
+    tool: "knife",
+    type: "normal",
+    images: { whole: chocolateWhole, opened: chocolateCut },
+  },
+  {
+    key: "donut",
+    name: "Donut",
+    tool: "knife",
+    type: "normal",
+    images: { whole: donutWhole, opened: donutCut },
+  },
+  {
+    key: "cupcake",
+    name: "Cupcake",
+    tool: "knife",
+    type: "normal",
+    images: { whole: cupcakeWhole, opened: cupcakeCut },
+  },
+  {
+    key: "mango",
+    name: "Mango",
+    tool: "knife",
+    type: "normal",
+    images: { whole: mangoWhole, opened: mangoCut },
+  },
+  {
+    key: "pineapple",
+    name: "Pineapple",
+    tool: "knife",
+    type: "normal",
+    images: { whole: pineappleWhole, opened: pineappleCut },
+  },
+
+  // 🔪 Knife — magical
+  {
+    key: "moonfruit",
+    name: "Glowing Moonfruit",
+    tool: "knife",
+    type: "magical",
+    images: { whole: moonFruitWhole, opened: moonFruitCut },
+  },
+  {
+    key: "auroraApple",
+    name: "Aurora Apple",
+    tool: "knife",
+    type: "magical",
+    images: { whole: auroraAppleWhole, opened: auroraAppleCut },
+  },
+  {
+    key: "goldenCupcake",
+    name: "Golden Cupcake",
+    tool: "knife",
+    type: "magical",
+    images: { whole: goldenCupcakeWhole, opened: goldenCupcakeCut },
+  },
+
+  // 🔨 Hammer — normal
+  {
+    key: "walnut",
+    name: "Walnut",
+    tool: "hammer",
+    type: "normal",
+    images: { whole: walnutWhole, opened: walnutCut },
+  },
+  {
+    key: "almond",
+    name: "Almond",
+    tool: "hammer",
+    type: "normal",
+    images: { whole: almondWhole, opened: almondCut },
+  },
+  {
+    key: "pistachio",
+    name: "Pistachio",
+    tool: "hammer",
+    type: "normal",
+    images: { whole: pistachioWhole, opened: pistachioCut },
+  },
+  {
+    key: "coconut",
+    name: "Coconut",
+    tool: "hammer",
+    type: "normal",
+    images: { whole: coconutWhole, opened: coconutCut },
+  },
+  {
+    key: "chocolateEgg",
+    name: "Chocolate Egg",
+    tool: "hammer",
+    type: "normal",
+    images: { whole: chocolateEggWhole, opened: chocolateEggCut },
+  },
+
+  // 🔨 Hammer — magical
+  {
+    key: "geode",
+    name: "Crystal Geode",
+    tool: "hammer",
+    type: "magical",
+    images: { whole: geodeWhole, opened: geodeCut },
+  },
+  {
+    key: "enchantedEgg",
+    name: "Enchanted Egg",
+    tool: "hammer",
+    type: "magical",
+    images: { whole: enchantedEggWhole, opened: enchantedEggCut },
+  },
+  {
+    key: "prismNut",
+    name: "Prism Nut",
+    tool: "hammer",
+    type: "magical",
+    images: { whole: prismNutWhole, opened: prismNutCut },
+  },
+];
+
+// Knife:
+
+// Apple
+
+// Orange
+
+// Kiwi
+
+// Cake
+
+// Chocolate Bar
+
+// Donut
+
+// Cupcake
+
+// Mango
+
+// Pineapple
+
+// Glowing Moonfruit (magical)
+
+// Aurora Apple (magical)
+
+// Golden Cupcake (magical)
+
+// Hammer:
+
+// Walnut
+
+// Almond
+
+// Pistachio
+
+// Coconut
+
+// Chocolate Egg
+
+// Geode (magical)
+
+// Enchanted Egg (magical)
+
+// Prism Nut (magical)

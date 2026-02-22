@@ -3,6 +3,8 @@ import { useState } from "react";
 export default function PaperStuckStage({
   cutText,
   paperStuckText,
+  image,
+  isMagical,
   onOpen,
   onReset,
   onScreenFlash,
@@ -29,6 +31,13 @@ export default function PaperStuckStage({
         }}
       >
         <div className="panelMain">{cutText}</div>
+        {image && (
+          <img
+            className={`foodImg ${isMagical ? "panel--magical" : ""}`}
+            src={image}
+            alt="Opened food"
+          />
+        )}
         <div className="panelMain" style={{ marginTop: 8 }}>
           {paperStuckText}
         </div>
