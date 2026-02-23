@@ -17,6 +17,7 @@ import {
 
 import { safeLowerPathSegment } from "./utils/routing";
 import { seededShuffle, pickRandom } from "./utils/pick";
+import { preloadImages } from "./utils/preload";
 import knifeCursor from "./assets/cursors/knife.png";
 import hammerCursor from "./assets/cursors/hammer.png";
 
@@ -38,6 +39,8 @@ export default function App() {
   const [selectedFood, setSelectedFood] = useState(null);
 
   const selectedTool = selectedToolKey ? TOOLS[selectedToolKey] : null;
+
+  const [isLoadingAssets, setIsLoadingAssets] = useState(true);
 
   const [quoteQueue, setQuoteQueue] = useState([]);
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -162,6 +165,15 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const urls = FOOD_LIST.flatMap((f) => [
+      f.images?.whole,
+      f.images?.opened,
+    ]).filter(Boolean);
+
+    preloadImages(urls).then(() => setIsLoadingAssets(false));
+  }, []);
+
   function resetGame() {
     setPhase("chooseTool");
     setSelectedToolKey(null);
@@ -216,6 +228,16 @@ export default function App() {
         </>
       }
     >
+      {isLoadingAssets ? (
+        <div className="fade">
+          <div className="panel">
+            <div className="panelMain">Loading game assets… ✨</div>
+            <div className="panelMeta">This takes a moment the first time.</div>
+          </div>
+        </div>
+      ) : (
+        <>{/* your existing game UI */}</>
+      )}
       <div key={flashKey} className="screenFlash" />
 
       {phase === "chooseTool" && (
