@@ -125,7 +125,7 @@ export const QUOTES = {
     "You accidentally applied for N3… truely iconic.",
     "Passing N3 like a responsible person.",
     "Applying for N3 by accident is still more ambitious than most people.",
-    "Next time: double-check the JLPT level. But also… the confidence is respectable.",
+    "Next time: double-check the JLPT level before the exam registration.",
     "It is healthy to laugh about your N3/N2 plot twist.",
     "Spiders are small. Your reaction is not.",
     "Ghost stories: a banned topic after 8 PM.",
